@@ -1,0 +1,61 @@
+server:
+  port: 8060
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8061/eureka/
+
+logging:
+  pattern: 
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: main-service
+          uri: lb://main-service
+          predicates:
+            - Path=/**
+        - id: sanitize-service
+          uri: lb://sanitize-service
+          predicates:
+            - Path=/sanitize/**
+#spring:
+#  cloud:
+#    gateway:
+#      discovery:
+#        locator:
+#          enabled: true
+#      routes:
+#      - id: movie-service
+#        uri: lb://movie-service
+#        predicates:
+#          - Path=/**
+#      - id: review-service
+#        uri: lb://review-service
+#          - Path=/**
+
+#spring:
+#  cloud:
+#    gateway:
+#      discovery:
+#        locator:
+#          enabled: true
+#      routes:
+#        - id: movie-service
+#          uri: lb://movie-service
+#        #        predicates:
+#        #        - Path=/**
+#        #        filters:
+#        #        - RewritePath=/(?<path>.*), /$\{path}
+#        - id: review-service
+#          uri: lb://review-service
+##        predicates:
+##        - Path=/**
+##        filters:
+##        - RewritePath=/(?<path>.*), /$\{path}
